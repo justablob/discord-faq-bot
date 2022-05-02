@@ -9,8 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/core": "^4.2.2",
+    "@mantine/hooks": "^4.2.2",
+    "mobx": "^6.5.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "usehooks-ts": "^2.5.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
