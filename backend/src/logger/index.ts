@@ -13,12 +13,12 @@ enum Level {
 }
 
 const levelStrings = {
-  [Level.critical]: ' CRIT ',
-  [Level.error]: ' ERROR ',
-  [Level.warning]: ' WARN ',
-  [Level.info]: ' INFO ',
-  [Level.debug]: ' DEBUG ',
-  [Level.trace]: ' TRACE '
+  [Level.critical]: chalk.bold.bgRed(' CRIT '),
+  [Level.error]: chalk.bgRed(' ERROR '),
+  [Level.warning]: chalk.bgYellow(' WARN '),
+  [Level.info]: chalk.bgGreen(' INFO '),
+  [Level.debug]: chalk.bgCyan(' DEBUG '),
+  [Level.trace]: chalk.bgBlue(' TRACE ')
 }
 
 class InternalLogger {
@@ -27,37 +27,37 @@ class InternalLogger {
   critical (component: string, ...args: any[]) {
     if (Level[this.level] < Level.critical) return
 
-    InternalLogger.writeMessage(chalk.bold.bgRed(levelStrings[Level.critical]), component, ...args)
+    InternalLogger.writeMessage(levelStrings[Level.critical], component, ...args)
   }
 
   error (component: string, ...args: any[]) {
     if (Level[this.level] < Level.error) return
 
-    InternalLogger.writeMessage(chalk.bgRed(levelStrings[Level.error]), component, ...args)
+    InternalLogger.writeMessage(levelStrings[Level.error], component, ...args)
   }
 
   warning (component: string, ...args: any[]) {
     if (Level[this.level] < Level.warning) return
 
-    InternalLogger.writeMessage(chalk.bgYellow(levelStrings[Level.warning]), component, ...args)
+    InternalLogger.writeMessage(levelStrings[Level.warning], component, ...args)
   }
 
   info (component: string, ...args: any[]) {
     if (Level[this.level] < Level.info) return
 
-    InternalLogger.writeMessage(chalk.bgGreen(levelStrings[Level.info]), component, ...args)
+    InternalLogger.writeMessage(levelStrings[Level.info], component, ...args)
   }
 
   debug (component: string, ...args: any[]) {
     if (Level[this.level] < Level.debug) return
 
-    InternalLogger.writeMessage(chalk.bgCyan(levelStrings[Level.debug]), component, ...args)
+    InternalLogger.writeMessage(levelStrings[Level.debug], component, ...args)
   }
 
   trace (component: string, ...args: any[]) {
     if (Level[this.level] < Level.trace) return
 
-    InternalLogger.writeMessage(chalk.bgBlue(levelStrings[Level.trace]), component, ...args)
+    InternalLogger.writeMessage(levelStrings[Level.trace], component, ...args)
   }
 
   static writeMessage (level: string, component: string, ...args: any[]) {
