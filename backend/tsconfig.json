@@ -4,13 +4,15 @@
     "esModuleInterop": true,
     "target": "es2017",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "resolveJsonModule": true,
+    "rootDir": ".",
     "noImplicitAny": false
   },
   "include": [
     "./src/**/*.ts"
   ],
   "exclude": [
-    "node_modules/**/*"
+    "node_modules/**/*",
+    "./dist/**/*"
   ]
 }

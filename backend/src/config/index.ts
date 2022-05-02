@@ -13,6 +13,7 @@ class EnvironmentError extends Error {
 
 export default function initConfig () {
   let env = readEnvironment({
+    NODE_ENV: 'development',
     MASTER_KEY: String,
     LOG_LEVEL: 'trace',
 

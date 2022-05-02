@@ -12,6 +12,9 @@ enum Level {
   trace = 5
 }
 
+type LogLevelNames = Exclude<keyof typeof Level, number>
+type LogFunction = (component: string, ...args: any[]) => void
+
 const levelStrings = {
   [Level.critical]: chalk.bold.bgRed(' CRIT '),
   [Level.error]: chalk.bgRed(' ERROR '),
@@ -21,52 +24,23 @@ const levelStrings = {
   [Level.trace]: chalk.bgBlue(' TRACE ')
 }
 
-class InternalLogger {
-  constructor (private level: string) {}
-
-  critical (component: string, ...args: any[]) {
-    if (Level[this.level] < Level.critical) return
-
-    InternalLogger.writeMessage(levelStrings[Level.critical], component, ...args)
-  }
-
-  error (component: string, ...args: any[]) {
-    if (Level[this.level] < Level.error) return
-
-    InternalLogger.writeMessage(levelStrings[Level.error], component, ...args)
-  }
-
-  warning (component: string, ...args: any[]) {
-    if (Level[this.level] < Level.warning) return
-
-    InternalLogger.writeMessage(levelStrings[Level.warning], component, ...args)
-  }
-
-  info (component: string, ...args: any[]) {
-    if (Level[this.level] < Level.info) return
-
-    InternalLogger.writeMessage(levelStrings[Level.info], component, ...args)
-  }
-
-  debug (component: string, ...args: any[]) {
-    if (Level[this.level] < Level.debug) return
-
-    InternalLogger.writeMessage(levelStrings[Level.debug], component, ...args)
-  }
-
-  trace (component: string, ...args: any[]) {
-    if (Level[this.level] < Level.trace) return
-
-    InternalLogger.writeMessage(levelStrings[Level.trace], component, ...args)
-  }
-
-  static writeMessage (level: string, component: string, ...args: any[]) {
-    console.log(`${chalk.gray(dayjs().format('YYYY-MM-DD HH:mm:ssZ'))} ${level} ${chalk.bold(component)} ${chalk.gray('-')}`, ...args)
-  }
+function writeMessage (level: string, component: string, ...args: any[]) {
+  const formattedComponent = component ? ` ${chalk.bold(component)} ${chalk.gray('-')}` : ''
+  console.log(`${chalk.gray(dayjs().format('YYYY-MM-DD HH:mm:ssZ'))} ${level}${formattedComponent}`, ...args)
 }
 
 export default function initLogger (ctx: Context) {
-  return new InternalLogger(ctx.config.LOG_LEVEL)
+  const functions: any = {}
+
+  for (let k of Object.keys(Level).filter(el => isNaN(Number(el)))) {
+    functions[k] = (component, ...args) => {
+      if (Level[ctx.config.LOG_LEVEL] < Level[k]) return
+
+      writeMessage(levelStrings[Level[k]], component, ...args)
+    }
+  }
+
+  return functions as { [x in LogLevelNames]: LogFunction }
 }
 
 export type Logger = ReturnType<typeof initLogger>
