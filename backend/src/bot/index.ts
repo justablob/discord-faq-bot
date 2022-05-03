@@ -1,8 +1,8 @@
-import { Context } from '../types'
+import createService from '../createService'
 
 import { Client, Intents } from 'discord.js'
 
-export default async function initBot (ctx: Context) {
+export default createService((ctx) => {
   const client = new Client({
     intents: new Intents([
       Intents.FLAGS.GUILDS,
@@ -17,4 +17,4 @@ export default async function initBot (ctx: Context) {
   client.login(ctx.config.DISCORD_BOT_TOKEN)
 
   return client
-}
+})

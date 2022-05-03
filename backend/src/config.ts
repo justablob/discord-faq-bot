@@ -11,7 +11,7 @@ class EnvironmentError extends Error {
   }
 }
 
-export default function initConfig () {
+export default function config () {
   let env = readEnvironment({
     NODE_ENV: 'development',
     MASTER_KEY: String,
@@ -19,6 +19,7 @@ export default function initConfig () {
 
     API_PORT: 8001,
     API_HOST: '0.0.0.0',
+    API_PROXIES: 'loopback',
     API_BASE: '/',
 
     DB_HOST: '127.0.0.1',
@@ -42,4 +43,4 @@ export default function initConfig () {
   return env
 }
 
-export type Config = ReturnType<typeof initConfig>
+export type Config = ReturnType<typeof config>

@@ -9,5 +9,15 @@ export default defineConfig({
     checker({
       typescript: true
     })
-  ]
+  ],
+
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+        xfwd: true
+      }
+    }
+  }
 })
