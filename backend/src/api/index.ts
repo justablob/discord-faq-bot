@@ -2,6 +2,8 @@ import createService from '../createService'
 
 import createExpress, { Router } from 'express'
 
+import requestLogger from './requestLogger'
+
 import index from './routers'
 
 export default createService(async (ctx) => {
@@ -9,6 +11,8 @@ export default createService(async (ctx) => {
   const baseRouter = Router()
 
   express.set('trust proxy', ctx.config.API_PROXIES)
+
+  baseRouter.use(requestLogger(ctx))
 
   baseRouter.use(...await index(ctx))
 
